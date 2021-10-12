@@ -7,7 +7,7 @@ import { MyNftToken } from "../../typechain/MyNftToken";
 import { Timelock } from "../../typechain/Timelock";
 import { Signers } from "../types";
 import { expect } from "chai";
-import { getExpectedContractAddress } from "../utils";
+import { getExpectedContractAddress } from "../../tasks/utils";
 
 const { deployContract } = hre.waffle;
 

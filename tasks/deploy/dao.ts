@@ -1,5 +1,5 @@
 import { task } from "hardhat/config";
-import { getExpectedContractAddress } from "../../test/utils";
+import { getExpectedContractAddress } from "../utils";
 
 import {
   MyNftToken,
