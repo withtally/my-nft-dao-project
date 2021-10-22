@@ -18,7 +18,7 @@ contract MyGovernor is Governor, GovernorCompatibilityBravo, GovernorVotesComp, 
     }
 
     function votingPeriod() public pure override returns (uint256) {
-        return 2; // 1 week
+        return 68; // 15 minutes
     }
 
     function quorum(uint256 blockNumber) public pure override returns (uint256) {
