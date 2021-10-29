@@ -42,8 +42,9 @@ task("deploy:Dao").setAction(async function (_, { ethers, run }) {
   await token.safeMint(signerAddress);
   await token.safeMint(signerAddress);
   await token.safeMint(signerAddress);
+  await token.safeMint(signerAddress);
 
-  console.log("Minted 3 NFTs to get us started");
+  console.log("Minted 4 NFTs to get us started");
 
   // Allow the timelock to perform actions on the NFT contract as part of proposal execution
   await token.setApprovalForAll(timelock.address, true);
