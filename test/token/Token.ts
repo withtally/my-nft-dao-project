@@ -43,5 +43,10 @@ describe("Unit tests", function () {
         await this.token.connect(this.signers.tokenReceiver).getCurrentVotes(this.signers.delegatee.address),
       ).to.equal(1);
     });
+
+    it("token returns uri", async function () {
+      const uri = await this.token.tokenURI(1);
+      console.log(uri);
+    });
   });
 });
