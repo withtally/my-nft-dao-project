@@ -46,10 +46,10 @@ task("deploy:Dao").setAction(async function (_, { ethers, run }) {
 
   console.log("Minted 4 NFTs to get us started");
 
-  // Allow the timelock to perform actions on the NFT contract as part of proposal execution
-  await token.setApprovalForAll(timelock.address, true);
+  // Transfer ownership to the timelock to allow it to perform actions on the NFT contract as part of proposal execution
+  await token.transferOwnership(timelock.address);
 
-  console.log("Granted the timelock permissions to run safeMint()");
+  console.log("Granted the timelock ownership of the NFT Token");
 
   await run("verify:verify", {
     address: token.address,
