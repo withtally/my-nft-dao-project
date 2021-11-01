@@ -80,6 +80,8 @@
     "typechain": "cross-env TS_NODE_TRANSPILE_ONLY=true hardhat typechain"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.3.2"
-  }
+    "@openzeppelin/contracts": "^4.3.2",
+    "base64-sol": "^1.1.0"
+  },
+  "packageManager": "yarn@3.1.0"
 }
