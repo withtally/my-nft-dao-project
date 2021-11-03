@@ -45,8 +45,18 @@ describe("Unit tests", function () {
     });
 
     it("token returns uri", async function () {
-      const uri = await this.token.tokenURI(1);
-      console.log(uri);
+      let uri = await this.token.tokenURI(1);
+      console.log("base64:\n", uri);
+
+      uri = uri.replace("data:application/json;base64,", "");
+      const decoded = Buffer.from(uri, "base64").toString();
+
+      const parsed = JSON.parse(decoded);
+      console.log("\nparsed:\n", parsed);
+
+      const image = parsed.image.replace("data:image/svg+xml;base64,", "");
+      const imgDecoded = Buffer.from(image, "base64").toString();
+      console.log("\nsvg:\n", imgDecoded);
     });
   });
 });
