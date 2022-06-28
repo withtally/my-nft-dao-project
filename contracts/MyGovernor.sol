@@ -12,7 +12,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         Governor("MyGovernor")
         GovernorSettings(
             1, /* 1 block */
-            63,
+            9,
             2
         )
         GovernorVotes(_token)
