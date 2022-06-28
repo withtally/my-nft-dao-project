@@ -44,48 +44,33 @@ describe("Unit tests", function () {
     await this.token.connect(this.signers.admin).safeMint(this.signers.admin.address);
     await this.token.connect(this.signers.admin).safeMint(this.signers.admin.address);
     await this.token.connect(this.signers.admin).safeMint(this.signers.admin.address);
+    await this.token.connect(this.signers.admin).delegate(this.signers.admin.address);
+
     await this.token.connect(this.signers.admin).safeMint(this.signers.tokenReceiver.address);
+    await this.token.connect(this.signers.tokenReceiver).delegate(this.signers.tokenReceiver.address);
   });
 
   describe("Governor", function () {
-    it("propose and execute a proposal", async function () {
-      let now = await hre.waffle.provider.getBlock("latest").then(block => block.timestamp);
-
+    it("propose and vote on a proposal", async function () {
       const calldata = new ethers.utils.AbiCoder().encode([], []);
 
-      const txn = await this.governor["propose(address[],uint256[],string[],bytes[],string)"](
-        [this.token.address],
-        [0],
-        ["totalSupply()"],
-        [calldata],
-        "Send no ETH",
-      );
+      const txn = await this.governor
+        .connect(this.signers.admin)
+        .propose([this.token.address], [0], [calldata], "Send no ETH");
 
       const receipt = await txn.wait();
       const proposalId = receipt.events![0].args!.proposalId;
 
       // check proposal id exists
-      expect((await this.governor.proposals(proposalId)).forVotes.toString()).to.eql("0");
+      expect(await this.governor.state(proposalId)).equal(0);
 
       await hre.network.provider.send("evm_mine");
 
-      await this.governor.castVote(proposalId, 1);
+      await this.governor.connect(this.signers.admin).castVote(proposalId, 1);
+      await this.governor.connect(this.signers.tokenReceiver).castVote(proposalId, 1);
 
       // check we have voted
-      expect((await this.governor.proposals(proposalId)).forVotes.toString()).to.eql("4");
-
-      await this.governor["queue(uint256)"](proposalId);
-
-      now = await hre.waffle.provider.getBlock("latest").then(block => block.timestamp);
-      await hre.network.provider.request({
-        method: "evm_setNextBlockTimestamp",
-        params: [now + 11],
-      });
-
-      await this.governor["execute(uint256)"](proposalId);
-
-      // check it executed
-      expect((await this.governor.proposals(proposalId)).executed).to.eql(true);
+      expect(await this.governor.state(proposalId)).to.eql(1);
     });
   });
 });

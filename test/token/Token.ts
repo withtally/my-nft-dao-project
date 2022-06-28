@@ -31,17 +31,16 @@ describe("Unit tests", function () {
 
     it("token holder can check vote to delegate balance", async function () {
       await this.token.connect(this.signers.admin).safeMint(this.signers.tokenReceiver.address);
+      await this.token.connect(this.signers.tokenReceiver).delegate(this.signers.tokenReceiver.address);
       expect(
-        await this.token.connect(this.signers.tokenReceiver).votesToDelegate(this.signers.tokenReceiver.address),
+        await this.token.connect(this.signers.tokenReceiver).getVotes(this.signers.tokenReceiver.address),
       ).to.equal(1);
     });
 
     it("token holder can delegate votes", async function () {
       await this.token.connect(this.signers.admin).safeMint(this.signers.tokenReceiver.address);
       await this.token.connect(this.signers.tokenReceiver).delegate(this.signers.delegatee.address);
-      expect(
-        await this.token.connect(this.signers.tokenReceiver).getCurrentVotes(this.signers.delegatee.address),
-      ).to.equal(1);
+      expect(await this.token.connect(this.signers.tokenReceiver).getVotes(this.signers.delegatee.address)).to.equal(1);
     });
   });
 });
